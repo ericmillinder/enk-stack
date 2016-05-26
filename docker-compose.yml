@@ -1,0 +1,27 @@
+nifi:
+  image: anoopnair/nifi-alpine:latest
+  ports:
+    - "28080:8080"
+    - "9991:9991"
+  links:
+    - elasticsearch
+
+elasticsearch:
+  image: elasticsearch:latest
+  name: elasticsearch
+  command: elasticsearch
+  volumes:
+    - /data:/data
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+
+kibana:
+  build: kibana/
+  name: kibana
+  volumes:
+    - ./kibana/config/:/opt/kibana/config/
+  ports:
+    - "5601:5601"
+  links:
+    - elasticsearch
